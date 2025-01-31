@@ -1,4 +1,7 @@
+import { Types } from "mongoose";
+
 export type TGardeningPosts = {
-    postContent: string;
-    isDeleted: boolean;
-  };
+  userId: Types.ObjectId;
+  postContent: string;
+  isDeleted: boolean;
+};

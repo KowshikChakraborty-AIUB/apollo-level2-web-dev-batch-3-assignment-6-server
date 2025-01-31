@@ -7,7 +7,7 @@ const createGardeningPostsIntoDB = async (payload: TGardeningPosts) => {
 };
 
 const getAllGardeningPostsFromDB = async () => {
-    const result = GardeningPosts.find({ isDeleted: false })
+    const result = GardeningPosts.find({ isDeleted: false }).populate('userId');
     return result;
   };
 

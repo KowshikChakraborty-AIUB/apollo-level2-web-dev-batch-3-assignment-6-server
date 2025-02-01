@@ -23,7 +23,18 @@ const getAllGardeningPosts = catchAsync(async (req, res) => {
     });
 });
 
+const getGardeningPostsByUserId = catchAsync(async (req, res) => {
+    const result = await GardeningPostsServices.getGardeningPostsByUserIdFromDB(req.params.id);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "User's Posts retrieved successfully",
+        data: result,
+    });
+});
+
 export const GardeningPostsControllers = {
     createGardeningPosts,
-    getAllGardeningPosts
+    getAllGardeningPosts,
+    getGardeningPostsByUserId
 };

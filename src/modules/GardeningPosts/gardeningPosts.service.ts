@@ -9,9 +9,17 @@ const createGardeningPostsIntoDB = async (payload: TGardeningPosts) => {
 const getAllGardeningPostsFromDB = async () => {
     const result = GardeningPosts.find({ isDeleted: false }).populate('userId');
     return result;
-  };
+};
+
+
+const getGardeningPostsByUserIdFromDB = async (id: string) => {
+    const result = await GardeningPosts.find({ userId: id, isDeleted: false })
+        .populate("userId")
+    return result;
+};
 
 export const GardeningPostsServices = {
     createGardeningPostsIntoDB,
-    getAllGardeningPostsFromDB
+    getAllGardeningPostsFromDB,
+    getGardeningPostsByUserIdFromDB
 };

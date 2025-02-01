@@ -13,4 +13,6 @@ router.post(
 
 router.get('/', GardeningPostsControllers.getAllGardeningPosts);
 
+router.get("/userSpecificPost/:id", GardeningPostsControllers.getGardeningPostsByUserId);
+
 export const gardeningPostsRoutes = router;

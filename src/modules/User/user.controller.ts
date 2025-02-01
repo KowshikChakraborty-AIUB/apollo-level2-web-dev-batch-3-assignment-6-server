@@ -31,7 +31,33 @@ const getUsersByUserId = catchAsync(async (req, res) => {
     });
 });
 
+const followUnfollowUsers = catchAsync(async (req, res) => {
+    const { userId, userIWantToFolllowId, action } = req.params;
+
+    let result;
+    if (action === 'follow') {
+        result = await UserServices.followUser(userId, userIWantToFolllowId);
+    } else if (action === 'unfollow') {
+        result = await UserServices.unfollowUser(userId, userIWantToFolllowId);
+    } else {
+        return sendResponse(res, {
+            statusCode: 400,
+            success: false,
+            message: 'Error! "follow" or "unfollow" should be expected',
+            data: null,
+        });
+    }
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: result.success,
+        message: result.message,
+        data: result.data,
+    });
+});
+
 export const UserControllers = {
     registerUser,
-    getUsersByUserId
+    getUsersByUserId,
+    followUnfollowUsers
 };

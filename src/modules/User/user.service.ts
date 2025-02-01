@@ -4,6 +4,7 @@ import { TUser } from './user.interface';
 import { User } from './user.model';
 import { createToken } from '../Auth/auth.utils';
 import config from '../../config';
+import { Types } from 'mongoose';
 
 const registerUserIntoDB = async (payload: TUser) => {
     const result = await User.create(payload);
@@ -49,7 +50,89 @@ const getUsersByUserIdFromDB = async (userId: string) => {
     return result;
 };
 
+const followUser = async (userId: string, userIWantToFolllowId: string) => {
+    const user = await User.findById(userId);
+    const userIWantToFolllow = await User.findById(userIWantToFolllowId);
+
+    if (!user || !userIWantToFolllow) {
+        return {
+            success: false,
+            message: 'User is not found',
+            data: null,
+        };
+    }
+
+    const isAlreadyFollowing = user.following.includes(
+        new Types.ObjectId(userIWantToFolllowId),
+    );
+    const isAlreadyFollower = userIWantToFolllow.followers.includes(
+        new Types.ObjectId(userId),
+    );
+
+    if (isAlreadyFollowing || isAlreadyFollower) {
+        return {
+            success: false,
+            message: 'You are already following this user',
+            data: null,
+        };
+    }
+
+    user.following.push(new Types.ObjectId(userIWantToFolllowId));
+    userIWantToFolllow.followers.push(new Types.ObjectId(userId));
+
+    await user.save();
+    await userIWantToFolllow.save();
+
+    return {
+        success: true,
+        message: 'You are following this user now',
+        data: { following: user.following, followers: userIWantToFolllow.followers },
+    };
+};
+
+const unfollowUser = async (userId: string, userIWantToFolllowId: string) => {
+    const user = await User.findById(userId);
+    const userIWantToFollow = await User.findById(userIWantToFolllowId);
+
+    if (!user || !userIWantToFollow) {
+        return {
+            success: false,
+            message: 'User not found',
+            data: null,
+        };
+    }
+
+    const isFollowing = user.following.includes(new Types.ObjectId(userIWantToFolllowId));
+    const isFollower = userIWantToFollow.followers.includes(new Types.ObjectId(userId));
+
+    if (!isFollowing || !isFollower) {
+        return {
+            success: false,
+            message: 'You are not following this user',
+            data: null,
+        };
+    }
+
+    user.following = user.following.filter(
+        (id) => !id.equals(new Types.ObjectId(userIWantToFolllowId)),
+    );
+    userIWantToFollow.followers = userIWantToFollow.followers.filter(
+        (id) => !id.equals(new Types.ObjectId(userId)),
+    );
+
+    await user.save();
+    await userIWantToFollow.save();
+
+    return {
+        success: true,
+        message: 'You unfollowed this user',
+        data: { following: user.following, followers: userIWantToFollow.followers },
+    };
+};
+
 export const UserServices = {
     registerUserIntoDB,
-    getUsersByUserIdFromDB
+    getUsersByUserIdFromDB,
+    followUser,
+    unfollowUser
 };

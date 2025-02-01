@@ -21,5 +21,10 @@ router.post(
 
 router.get('/usersByUserId/:userId', UserControllers.getUsersByUserId);
 
+router.post(
+    '/followUnfollow/:action/:userId/:userIWantToFolllowId',
+    UserControllers.followUnfollowUsers,
+);
+
 
 export const userRoute = router;

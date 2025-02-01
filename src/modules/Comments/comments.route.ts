@@ -11,4 +11,6 @@ router.post(
     CommentsControllers.createComments,
 );
 
+router.get('/commentsByPostId/:postId', CommentsControllers.getCommentsByPostId);
+
 export const commentsRoutes = router;

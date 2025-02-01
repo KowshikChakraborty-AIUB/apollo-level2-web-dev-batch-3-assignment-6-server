@@ -17,6 +17,10 @@ const moduleRoutes = [
     {
         path: '/comments',
         route: commentsRoutes
+    },
+    {
+        path: '/users',
+        route: userRoute
     }
 ];
 

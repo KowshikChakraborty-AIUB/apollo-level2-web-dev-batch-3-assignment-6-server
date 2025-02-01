@@ -44,6 +44,12 @@ const registerUserIntoDB = async (payload: TUser) => {
 
 };
 
+const getUsersByUserIdFromDB = async (userId: string) => {
+    const result = await User.find({ _id: userId })
+    return result;
+};
+
 export const UserServices = {
     registerUserIntoDB,
+    getUsersByUserIdFromDB
 };

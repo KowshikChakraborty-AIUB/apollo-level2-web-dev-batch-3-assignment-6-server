@@ -13,6 +13,20 @@ const createComments = catchAsync(async (req, res) => {
     });
 });
 
+const getCommentsByPostId = catchAsync(async (req, res) => {
+    const { postId } = req.params;
+  
+    const result = await CommentsServices.getCommentsByPostIdFromDB(postId);
+  
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: 'Comments by post Id retrieved successfully',
+      data: result,
+    });
+  });
+
 export const CommentsControllers = {
-    createComments
+    createComments,
+    getCommentsByPostId
 };

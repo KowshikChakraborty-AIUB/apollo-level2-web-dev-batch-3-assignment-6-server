@@ -18,6 +18,17 @@ const createcommentsIntoDB = async (payload: TComment) => {
     return result;
 };
 
+const getCommentsByPostIdFromDB = async (postId: string) => {
+    const comments = await Comments.find({ postId, isDeleted: false })
+        .populate('postId')
+        .populate({
+            path: 'userId',
+            select: '-password',
+        });
+    return comments;
+};
+
 export const CommentsServices = {
     createcommentsIntoDB,
+    getCommentsByPostIdFromDB
 };

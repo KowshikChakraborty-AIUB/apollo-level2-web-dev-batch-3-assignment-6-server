@@ -19,5 +19,7 @@ router.post(
     AuthControllers.loginUser,
 );
 
+router.get('/usersByUserId/:userId', UserControllers.getUsersByUserId);
+
 
 export const userRoute = router;

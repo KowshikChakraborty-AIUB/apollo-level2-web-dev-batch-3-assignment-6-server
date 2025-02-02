@@ -46,7 +46,7 @@ const registerUserIntoDB = async (payload: TUser) => {
 };
 
 const getAllUsersFromDB = async () => {
-    const result = User.find({ role: 'user' });
+    const result = User.find({ role: 'user' }).select('-password');
     return result;
 };
 

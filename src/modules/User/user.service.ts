@@ -45,6 +45,11 @@ const registerUserIntoDB = async (payload: TUser) => {
 
 };
 
+const getAllUsersFromDB = async () => {
+    const result = User.find({ role: 'user' });
+    return result;
+};
+
 const getUsersByUserIdFromDB = async (userId: string) => {
     const result = await User.find({ _id: userId })
     return result;
@@ -132,6 +137,7 @@ const unfollowUser = async (userId: string, userIWantToFolllowId: string) => {
 
 export const UserServices = {
     registerUserIntoDB,
+    getAllUsersFromDB,
     getUsersByUserIdFromDB,
     followUser,
     unfollowUser

@@ -23,7 +23,24 @@ const userSchema = new Schema<TUser, UserModel>({
     following: { type: [Schema.Types.ObjectId], ref: 'User', default: [] },
 });
 
+userSchema.pre('save', function (next) {
+
+    if (!this.followers) {
+        this.followers = [];
+    }
+
+    if (!this.following) {
+        this.following = [];
+    }
+
+    next();
+});
+
 userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) {
+        return next();
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const user = this; // doc
     // hashing password and save into DB
@@ -31,12 +48,6 @@ userSchema.pre('save', async function (next) {
         user.password,
         Number(config.bcrypt_salt_rounds),
     );
-    next();
-});
-
-// set '' after saving password
-userSchema.post('save', function (doc, next) {
-    doc.password = '';
     next();
 });
 

@@ -2,13 +2,14 @@ import { Router } from 'express';
 import { userRoute } from '../modules/User/user.route';
 import { gardeningPostsRoutes } from '../modules/GardeningPosts/gardeningPosts.route';
 import { commentsRoutes } from '../modules/Comments/comments.route';
+import { authRoute } from '../modules/Auth/auth.route';
 
 const router = Router();
 
 const moduleRoutes = [
     {
         path: '/auth',
-        route: userRoute,
+        route: authRoute,
     },
     {
         path: '/posts',

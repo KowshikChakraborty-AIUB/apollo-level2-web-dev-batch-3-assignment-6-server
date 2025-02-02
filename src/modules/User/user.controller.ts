@@ -18,6 +18,18 @@ const registerUser = catchAsync(async (req, res) => {
     });
 });
 
+const getAllUsers = catchAsync(async (req, res) => {
+    const result = await UserServices.getAllUsersFromDB();
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'All users retrieved successfully',
+        data: result,
+    });
+
+});
+
 const getUsersByUserId = catchAsync(async (req, res) => {
     const { useId } = req.params;
 
@@ -58,6 +70,7 @@ const followUnfollowUsers = catchAsync(async (req, res) => {
 
 export const UserControllers = {
     registerUser,
+    getAllUsers,
     getUsersByUserId,
     followUnfollowUsers
 };

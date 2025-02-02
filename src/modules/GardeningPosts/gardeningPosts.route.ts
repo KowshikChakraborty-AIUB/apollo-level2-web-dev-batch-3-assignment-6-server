@@ -15,4 +15,9 @@ router.get('/', GardeningPostsControllers.getAllGardeningPosts);
 
 router.get("/userSpecificPost/:id", GardeningPostsControllers.getGardeningPostsByUserId);
 
+router.post('/upvote/:postId/:userId', GardeningPostsControllers.gardeningPostsUpvoteControllers);
+
+router.post('/downvote/:postId/:userId', GardeningPostsControllers.gardeningPostsDownvoteControllers,
+);
+
 export const gardeningPostsRoutes = router;

@@ -33,8 +33,34 @@ const getGardeningPostsByUserId = catchAsync(async (req, res) => {
     });
 });
 
+const gardeningPostsUpvoteControllers = catchAsync(async (req, res) => {
+    const { postId, userId } = req.params;
+
+    const result = await GardeningPostsServices.gardeningPostsUpvote(postId, userId);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Post upvoted successfully',
+        data: result,
+    });
+});
+
+const gardeningPostsDownvoteControllers = catchAsync(async (req, res) => {
+    const { postId, userId } = req.params;
+
+    const result = await GardeningPostsServices.gardeningPostsDownvote(postId, userId);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Post downvoted successfully',
+        data: result,
+    });
+});
+
 export const GardeningPostsControllers = {
     createGardeningPosts,
     getAllGardeningPosts,
-    getGardeningPostsByUserId
+    getGardeningPostsByUserId,
+    gardeningPostsUpvoteControllers,
+    gardeningPostsDownvoteControllers,
 };

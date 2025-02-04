@@ -21,6 +21,7 @@ const userSchema = new Schema<TUser, UserModel>({
     payment: { type: Boolean, default: false },
     followers: { type: [Schema.Types.ObjectId], ref: 'User', default: [] },
     following: { type: [Schema.Types.ObjectId], ref: 'User', default: [] },
+    isDeleted: { type: Boolean, default: false }
 });
 
 userSchema.pre('save', function (next) {
@@ -52,7 +53,7 @@ userSchema.pre('save', async function (next) {
 });
 
 userSchema.statics.isUserExistsByEmail = async function (email: string) {
-    return await User.findOne({ email });
+    return await User.findOne({ email, isDeleted: { $ne: true } });
 };
 
 userSchema.statics.isPasswordMatched = async function (

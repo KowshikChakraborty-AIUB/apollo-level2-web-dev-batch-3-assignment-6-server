@@ -46,7 +46,7 @@ const registerUserIntoDB = async (payload: TUser) => {
 };
 
 const getAllUsersFromDB = async () => {
-    const result = User.find({ role: 'user' }).select('-password');
+    const result = User.find({ role: 'user', isDeleted: { $ne: true } }).select('-password');
     return result;
 };
 
@@ -155,6 +155,14 @@ const unfollowUser = async (userId: string, userIWantToFolllowId: string) => {
     };
 };
 
+const deleteUserFromDB = async (id: string) => {
+    return await User.findByIdAndUpdate(
+        id,
+        { isDeleted: true },
+        { new: true, upsert: true }
+    );
+};
+
 export const UserServices = {
     registerUserIntoDB,
     getAllUsersFromDB,
@@ -162,5 +170,6 @@ export const UserServices = {
     followUser,
     unfollowUser,
     getUserByEmailIdFromDB,
-    updateUserByEmailId
+    updateUserByEmailId,
+    deleteUserFromDB
 };

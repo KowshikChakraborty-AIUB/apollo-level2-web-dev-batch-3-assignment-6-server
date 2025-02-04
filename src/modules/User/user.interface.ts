@@ -14,6 +14,7 @@ export type TUser = {
     payment: boolean;
     followers: Types.ObjectId[];
     following: Types.ObjectId[];
+    isDeleted: boolean;
 };
 
 export interface UserModel extends Model<TUser> {

@@ -28,13 +28,15 @@ router.get('/usersByUserId/:userId', UserControllers.getUsersByUserId);
 router.get('/manageUserProfile/:email', UserControllers.getUserByEmailId);
 
 router.post(
-    '/followUnfollow/:action/:userId/:userIWantToFolllowId',
-    UserControllers.followUnfollowUsers,
+  '/followUnfollow/:action/:userId/:userIWantToFolllowId',
+  UserControllers.followUnfollowUsers,
 );
 
-router.put( '/updateUserProfile/:email', validateRequest(updateUserValidationSchema),
-    UserControllers.updateUserByEmailId,
-  );
+router.put('/updateUserProfile/:email', validateRequest(updateUserValidationSchema),
+  UserControllers.updateUserByEmailId,
+);
+
+router.put("/deleteUser/:userId", UserControllers.deleteUser);
 
 
 export const userRoute = router;

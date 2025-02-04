@@ -59,7 +59,7 @@ const getUserByEmailId = catchAsync(async (req, res) => {
 const updateUserByEmailId = catchAsync(async (req, res) => {
     const { email } = req.params;
     const updateData = req.body;
-    
+
 
     const result = await UserServices.updateUserByEmailId(email, updateData);
 
@@ -96,11 +96,22 @@ const followUnfollowUsers = catchAsync(async (req, res) => {
     });
 });
 
+const deleteUser = catchAsync(async (req, res) => {
+    const result = await UserServices.deleteUserFromDB(req.params?.userId);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "User deleted successfully",
+        data: result,
+    });
+});
+
 export const UserControllers = {
     registerUser,
     getAllUsers,
     getUsersByUserId,
     followUnfollowUsers,
     getUserByEmailId,
-    updateUserByEmailId
+    updateUserByEmailId,
+    deleteUser
 };

@@ -43,6 +43,34 @@ const getUsersByUserId = catchAsync(async (req, res) => {
     });
 });
 
+const getUserByEmailId = catchAsync(async (req, res) => {
+    const { email } = req.params;
+
+    const result = await UserServices.getUserByEmailIdFromDB(email);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'User retrieved successfully',
+        data: result,
+    });
+
+});
+
+const updateUserByEmailId = catchAsync(async (req, res) => {
+    const { email } = req.params;
+    const updateData = req.body;
+    
+
+    const result = await UserServices.updateUserByEmailId(email, updateData);
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'User updated successfully',
+        data: result,
+    });
+});
+
 const followUnfollowUsers = catchAsync(async (req, res) => {
     const { userId, userIWantToFolllowId, action } = req.params;
 
@@ -72,5 +100,7 @@ export const UserControllers = {
     registerUser,
     getAllUsers,
     getUsersByUserId,
-    followUnfollowUsers
+    followUnfollowUsers,
+    getUserByEmailId,
+    updateUserByEmailId
 };

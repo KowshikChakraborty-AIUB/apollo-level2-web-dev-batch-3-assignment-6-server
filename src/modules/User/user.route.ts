@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import { UserControllers } from './user.controller';
+import validateRequest from '../../Middlewares/validateRequest';
+import { updateUserValidationSchema } from './user.validaton';
 // import validateRequest from '../../Middlewares/validateRequest';
 // import userValidationSchema from './user.validaton';
 // import loginValidationSchema from '../Auth/auth.validation';
@@ -23,10 +25,16 @@ router.get('/', UserControllers.getAllUsers);
 
 router.get('/usersByUserId/:userId', UserControllers.getUsersByUserId);
 
+router.get('/manageUserProfile/:email', UserControllers.getUserByEmailId);
+
 router.post(
     '/followUnfollow/:action/:userId/:userIWantToFolllowId',
     UserControllers.followUnfollowUsers,
 );
+
+router.put( '/updateUserProfile/:email', validateRequest(updateUserValidationSchema),
+    UserControllers.updateUserByEmailId,
+  );
 
 
 export const userRoute = router;

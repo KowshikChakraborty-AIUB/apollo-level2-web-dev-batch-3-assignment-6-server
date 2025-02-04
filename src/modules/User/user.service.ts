@@ -55,6 +55,26 @@ const getUsersByUserIdFromDB = async (userId: string) => {
     return result;
 };
 
+const getUserByEmailIdFromDB = async (email: string) => {
+    const result = await User.findOne({ email: email }).select('-password');
+    return result;
+};
+
+const updateUserByEmailId = async (email: string, payload: Partial<TUser>) => {
+    const userData = await User.findOne({ email: email });
+
+    if (!userData) {
+        throw new AppError(httpStatus.NOT_FOUND, 'This user is not found');
+    }
+    const updatedUser = await User.findOneAndUpdate(
+        { email },
+        { $set: payload },
+        { new: true, runValidators: true },
+    );
+
+    return updatedUser;
+};
+
 const followUser = async (userId: string, userIWantToFolllowId: string) => {
     const user = await User.findById(userId);
     const userIWantToFolllow = await User.findById(userIWantToFolllowId);
@@ -140,5 +160,7 @@ export const UserServices = {
     getAllUsersFromDB,
     getUsersByUserIdFromDB,
     followUser,
-    unfollowUser
+    unfollowUser,
+    getUserByEmailIdFromDB,
+    updateUserByEmailId
 };

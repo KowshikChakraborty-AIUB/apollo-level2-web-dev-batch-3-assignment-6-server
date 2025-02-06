@@ -4,6 +4,8 @@ import { TLoginUser } from './auth.interface';
 import { createToken } from './auth.utils';
 import AppError from '../../Errors/AppError';
 import { User } from '../User/user.model';
+import { JwtPayload } from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 
 const loginUser = async (payload: TLoginUser) => {
@@ -48,6 +50,63 @@ const loginUser = async (payload: TLoginUser) => {
 
 };
 
+const changeUserPassword = async (
+    user: JwtPayload,
+    payload: {
+        oldPassword: string;
+        newPassword: string;
+    },
+) => {
+
+    const userData = await User.isUserExistsByEmail(user?.email);
+    
+
+    if (!userData) {
+        throw new AppError(httpStatus.NOT_FOUND, 'This user is not found');
+    }
+
+    const isOldPasswordCorrect = await bcrypt.compare(
+        payload.oldPassword,
+        userData.password,
+    );
+
+    if (!isOldPasswordCorrect) {
+        throw new AppError(httpStatus.FORBIDDEN, 'Old password is not correct');
+    }
+
+    const isSamePassword = await bcrypt.compare(
+        payload.newPassword,
+        userData.password,
+    );
+
+    if (isSamePassword) {
+        throw new AppError(
+            httpStatus.BAD_REQUEST,
+            'New password cannot be same as old password',
+        );
+    }
+
+    const newHashedPassword = await bcrypt.hash(
+        payload.newPassword,
+        Number(config.bcrypt_salt_rounds),
+    );
+
+    await User.findOneAndUpdate(
+        {
+            email: user.email,
+            role: user.role,
+        },
+        {
+            password: newHashedPassword,
+            needsPasswordChange: false,
+            passwordChangeAt: new Date(),
+        },
+        { new: true },
+    );
+    return { message: 'User password has been changed successfully' };
+};
+
 export const AuthServices = {
     loginUser,
+    changeUserPassword,
 };

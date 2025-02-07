@@ -96,6 +96,16 @@ const followUnfollowUsers = catchAsync(async (req, res) => {
     });
 });
 
+const updateUserRole = catchAsync(async (req, res) => {
+    const result = await UserServices.updateUserRoleIntoDB(req.params?.userId);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "Role updated successfully",
+        data: result,
+    });
+});
+
 const deleteUser = catchAsync(async (req, res) => {
     const result = await UserServices.deleteUserFromDB(req.params?.userId);
     sendResponse(res, {
@@ -113,5 +123,6 @@ export const UserControllers = {
     followUnfollowUsers,
     getUserByEmailId,
     updateUserByEmailId,
+    updateUserRole,
     deleteUser
 };

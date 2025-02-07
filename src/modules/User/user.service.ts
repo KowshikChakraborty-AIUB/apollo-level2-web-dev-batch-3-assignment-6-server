@@ -46,7 +46,7 @@ const registerUserIntoDB = async (payload: TUser) => {
 };
 
 const getAllUsersFromDB = async () => {
-    const result = User.find({ role: 'user', isDeleted: { $ne: true } }).select('-password');
+    const result = User.find({ isDeleted: { $ne: true } }).select('-password');
     return result;
 };
 
@@ -155,6 +155,27 @@ const unfollowUser = async (userId: string, userIWantToFolllowId: string) => {
     };
 };
 
+const updateUserRoleIntoDB = async (id: string) => {
+    const user = await User.findOne({ _id: id });
+    if (!user) {
+        throw new AppError(httpStatus.NOT_FOUND, 'User is not found');
+    }
+    if (user?.role === "user") {
+        return await User.findByIdAndUpdate(
+            id,
+            { role: "admin" },
+            { new: true, runValidators: true }
+        );
+    }
+    if (user?.role === "admin") {
+        return await User.findByIdAndUpdate(
+            id,
+            { role: "user" },
+            { new: true, runValidators: true }
+        );
+    }
+};
+
 const deleteUserFromDB = async (id: string) => {
     return await User.findByIdAndUpdate(
         id,
@@ -171,5 +192,6 @@ export const UserServices = {
     unfollowUser,
     getUserByEmailIdFromDB,
     updateUserByEmailId,
+    updateUserRoleIntoDB,
     deleteUserFromDB
 };

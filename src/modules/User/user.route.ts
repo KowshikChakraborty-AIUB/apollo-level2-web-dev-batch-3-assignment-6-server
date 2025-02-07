@@ -36,6 +36,8 @@ router.put('/updateUserProfile/:email', validateRequest(updateUserValidationSche
   UserControllers.updateUserByEmailId,
 );
 
+router.patch("/updateUserRole/:userId", UserControllers.updateUserRole);
+
 router.put("/deleteUser/:userId", UserControllers.deleteUser);
 
 

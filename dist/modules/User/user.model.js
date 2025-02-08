@@ -33,9 +33,22 @@ const userSchema = new mongoose_1.Schema({
     payment: { type: Boolean, default: false },
     followers: { type: [mongoose_1.Schema.Types.ObjectId], ref: 'User', default: [] },
     following: { type: [mongoose_1.Schema.Types.ObjectId], ref: 'User', default: [] },
+    isDeleted: { type: Boolean, default: false }
+});
+userSchema.pre('save', function (next) {
+    if (!this.followers) {
+        this.followers = [];
+    }
+    if (!this.following) {
+        this.following = [];
+    }
+    next();
 });
 userSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {
+        if (!this.isModified('password')) {
+            return next();
+        }
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const user = this; // doc
         // hashing password and save into DB
@@ -43,14 +56,9 @@ userSchema.pre('save', function (next) {
         next();
     });
 });
-// set '' after saving password
-userSchema.post('save', function (doc, next) {
-    doc.password = '';
-    next();
-});
 userSchema.statics.isUserExistsByEmail = function (email) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield exports.User.findOne({ email });
+        return yield exports.User.findOne({ email, isDeleted: { $ne: true } });
     });
 };
 userSchema.statics.isPasswordMatched = function (plainTextPassword, hashedPassword) {

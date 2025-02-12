@@ -5,6 +5,7 @@ import { changeUserPasswordValidationSchema, loginValidationSchema } from "./aut
 import { UserControllers } from "../User/user.controller";
 import { userValidationSchema } from "../User/user.validaton";
 import { auth } from "../../Middlewares/auth";
+import { USER_ROLE } from "../User/user.constant";
 
 const router = Router();
 
@@ -20,7 +21,7 @@ router.post(
 );
 router.post(
     '/changeUserPassword',
-    auth('user', 'admin'),
+    auth(USER_ROLE.user, USER_ROLE.admin),
     validateRequest(changeUserPasswordValidationSchema),
     AuthControllers.changeUserPassword,
 );

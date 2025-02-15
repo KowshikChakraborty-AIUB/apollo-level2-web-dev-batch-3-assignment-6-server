@@ -1,5 +1,6 @@
 import catchAsync from "../../Utils/catchAsync";
 import sendResponse from "../../Utils/sendResponse";
+import { GardeningPosts } from "./gardeningPosts.model";
 import { GardeningPostsServices } from "./gardeningPosts.service";
 
 const createGardeningPosts = catchAsync(async (req, res) => {
@@ -57,10 +58,23 @@ const gardeningPostsDownvoteControllers = catchAsync(async (req, res) => {
     });
 });
 
+const getTotalPostsCount = catchAsync(async (req, res) => {
+
+    const totalPosts = await GardeningPosts.countDocuments();
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Total Posts retrieved successfully',
+        data: totalPosts,
+    });
+})
+
 export const GardeningPostsControllers = {
     createGardeningPosts,
     getAllGardeningPosts,
     getGardeningPostsByUserId,
     gardeningPostsUpvoteControllers,
     gardeningPostsDownvoteControllers,
+    getTotalPostsCount
 };

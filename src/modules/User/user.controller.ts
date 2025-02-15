@@ -2,6 +2,7 @@ import httpStatus from "http-status";
 import catchAsync from "../../Utils/catchAsync";
 import { UserServices } from "./user.service";
 import sendResponse from "../../Utils/sendResponse";
+import { User } from "./user.model";
 //import sendResponse from "../../Utils/sendResponse";
 
 const registerUser = catchAsync(async (req, res) => {
@@ -116,6 +117,18 @@ const deleteUser = catchAsync(async (req, res) => {
     });
 });
 
+const getTotalUsersCount = catchAsync(async (req, res) => {
+
+    const totalUsers = await User.countDocuments();
+
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Total Users retrieved successfully',
+        data: totalUsers,
+    });
+})
+
 export const UserControllers = {
     registerUser,
     getAllUsers,
@@ -124,5 +137,6 @@ export const UserControllers = {
     getUserByEmailId,
     updateUserByEmailId,
     updateUserRole,
-    deleteUser
+    deleteUser,
+    getTotalUsersCount
 };

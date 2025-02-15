@@ -51,5 +51,7 @@ router.put("/deleteUser/:userId",
   UserControllers.deleteUser
 );
 
+router.get('/totalUsersCount', UserControllers.getTotalUsersCount);
+
 
 export const userRoute = router;

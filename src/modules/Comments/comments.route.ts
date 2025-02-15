@@ -16,4 +16,6 @@ router.post(
 
 router.get('/commentsByPostId/:postId', CommentsControllers.getCommentsByPostId);
 
+router.get('/totalCommentsCount', CommentsControllers.getTotalCommentsCount);
+
 export const commentsRoutes = router;

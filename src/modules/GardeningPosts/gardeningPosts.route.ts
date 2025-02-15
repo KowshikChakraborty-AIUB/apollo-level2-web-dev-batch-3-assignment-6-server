@@ -28,4 +28,6 @@ router.post('/downvote/:postId/:userId',
     GardeningPostsControllers.gardeningPostsDownvoteControllers,
 );
 
+router.get('/totalPostsCount', GardeningPostsControllers.getTotalPostsCount);
+
 export const gardeningPostsRoutes = router;

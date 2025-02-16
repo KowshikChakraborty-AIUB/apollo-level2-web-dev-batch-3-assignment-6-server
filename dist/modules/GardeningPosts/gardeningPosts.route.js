@@ -16,4 +16,5 @@ router.get('/', gardeningPosts_controller_1.GardeningPostsControllers.getAllGard
 router.get("/userSpecificPost/:id", gardeningPosts_controller_1.GardeningPostsControllers.getGardeningPostsByUserId);
 router.post('/upvote/:postId/:userId', (0, auth_1.auth)(user_constant_1.USER_ROLE.user, user_constant_1.USER_ROLE.admin), gardeningPosts_controller_1.GardeningPostsControllers.gardeningPostsUpvoteControllers);
 router.post('/downvote/:postId/:userId', (0, auth_1.auth)(user_constant_1.USER_ROLE.user, user_constant_1.USER_ROLE.admin), gardeningPosts_controller_1.GardeningPostsControllers.gardeningPostsDownvoteControllers);
+router.get('/totalPostsCount', gardeningPosts_controller_1.GardeningPostsControllers.getTotalPostsCount);
 exports.gardeningPostsRoutes = router;

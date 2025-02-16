@@ -32,4 +32,5 @@ router.post('/followUnfollow/:action/:userId/:userIWantToFolllowId', (0, auth_1.
 router.put('/updateUserProfile/:email', (0, auth_1.auth)(user_constant_1.USER_ROLE.user, user_constant_1.USER_ROLE.admin), (0, validateRequest_1.default)(user_validaton_1.updateUserValidationSchema), user_controller_1.UserControllers.updateUserByEmailId);
 router.patch("/updateUserRole/:userId", (0, auth_1.auth)(user_constant_1.USER_ROLE.admin), user_controller_1.UserControllers.updateUserRole);
 router.put("/deleteUser/:userId", (0, auth_1.auth)(user_constant_1.USER_ROLE.user, user_constant_1.USER_ROLE.admin), user_controller_1.UserControllers.deleteUser);
+router.get('/totalUsersCount', user_controller_1.UserControllers.getTotalUsersCount);
 exports.userRoute = router;

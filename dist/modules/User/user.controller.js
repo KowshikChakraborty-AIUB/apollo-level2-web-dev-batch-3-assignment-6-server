@@ -17,6 +17,7 @@ const http_status_1 = __importDefault(require("http-status"));
 const catchAsync_1 = __importDefault(require("../../Utils/catchAsync"));
 const user_service_1 = require("./user.service");
 const sendResponse_1 = __importDefault(require("../../Utils/sendResponse"));
+const user_model_1 = require("./user.model");
 //import sendResponse from "../../Utils/sendResponse";
 const registerUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_service_1.UserServices.registerUserIntoDB(req.body);
@@ -114,6 +115,15 @@ const deleteUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         data: result,
     });
 }));
+const getTotalUsersCount = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const totalUsers = yield user_model_1.User.countDocuments();
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Total Users retrieved successfully',
+        data: totalUsers,
+    });
+}));
 exports.UserControllers = {
     registerUser,
     getAllUsers,
@@ -122,5 +132,6 @@ exports.UserControllers = {
     getUserByEmailId,
     updateUserByEmailId,
     updateUserRole,
-    deleteUser
+    deleteUser,
+    getTotalUsersCount
 };

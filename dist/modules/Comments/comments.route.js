@@ -13,4 +13,6 @@ const user_constant_1 = require("../User/user.constant");
 const router = (0, express_1.Router)();
 router.post('/addComment', (0, auth_1.auth)(user_constant_1.USER_ROLE.user, user_constant_1.USER_ROLE.admin), (0, validateRequest_1.default)(comments_validation_1.commentsValidationSchema.createCommentsValidationSchema), comments_controller_1.CommentsControllers.createComments);
 router.get('/commentsByPostId/:postId', comments_controller_1.CommentsControllers.getCommentsByPostId);
+router.get('/totalCommentsCount', comments_controller_1.CommentsControllers.getTotalCommentsCount);
+router.get('/postsAndCommentsTrend', comments_controller_1.CommentsControllers.getPostsAndCommentsTrend);
 exports.commentsRoutes = router;

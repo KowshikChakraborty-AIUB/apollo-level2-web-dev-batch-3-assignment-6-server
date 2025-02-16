@@ -34,7 +34,52 @@ const getCommentsByPostIdFromDB = (postId) => __awaiter(void 0, void 0, void 0, 
     });
     return comments;
 });
+const getPostsAndCommentsTrendFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // Aggregate posts count by date
+        const postsData = yield gardeningPosts_model_1.GardeningPosts.aggregate([
+            {
+                $group: {
+                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+                    posts: { $sum: 1 }
+                }
+            },
+            { $sort: { _id: 1 } }
+        ]);
+        // Aggregate comments count by date
+        const commentsData = yield comments_model_1.Comments.aggregate([
+            {
+                $group: {
+                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+                    comments: { $sum: 1 }
+                }
+            },
+            { $sort: { _id: 1 } }
+        ]);
+        // Merge posts and comments data into a single trend array
+        const trendMap = {};
+        postsData.forEach((entry) => {
+            trendMap[entry._id] = { date: entry._id, posts: entry.posts, comments: 0 };
+        });
+        commentsData.forEach((entry) => {
+            if (trendMap[entry._id]) {
+                trendMap[entry._id].comments = entry.comments;
+            }
+            else {
+                trendMap[entry._id] = { date: entry._id, posts: 0, comments: entry.comments };
+            }
+        });
+        // Convert trendMap to array
+        const postsAndCommentsTrend = Object.values(trendMap);
+        return postsAndCommentsTrend;
+    }
+    catch (error) {
+        console.error("Error fetching analytics data:", error);
+        return [];
+    }
+});
 exports.CommentsServices = {
     createcommentsIntoDB,
-    getCommentsByPostIdFromDB
+    getCommentsByPostIdFromDB,
+    getPostsAndCommentsTrendFromDB
 };

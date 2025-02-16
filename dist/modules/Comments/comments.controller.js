@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentsControllers = void 0;
 const catchAsync_1 = __importDefault(require("../../Utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../Utils/sendResponse"));
+const comments_model_1 = require("./comments.model");
 const comments_service_1 = require("./comments.service");
 const createComments = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield comments_service_1.CommentsServices.createcommentsIntoDB(req.body);
@@ -35,7 +36,27 @@ const getCommentsByPostId = (0, catchAsync_1.default)((req, res) => __awaiter(vo
         data: result,
     });
 }));
+const getTotalCommentsCount = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const totalComments = yield comments_model_1.Comments.countDocuments();
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Total Comments retrieved successfully',
+        data: totalComments,
+    });
+}));
+const getPostsAndCommentsTrend = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield comments_service_1.CommentsServices.getPostsAndCommentsTrendFromDB();
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Posts and Comments Trend retrieved successfully',
+        data: result,
+    });
+}));
 exports.CommentsControllers = {
     createComments,
-    getCommentsByPostId
+    getCommentsByPostId,
+    getTotalCommentsCount,
+    getPostsAndCommentsTrend
 };

@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GardeningPostsControllers = void 0;
 const catchAsync_1 = __importDefault(require("../../Utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../Utils/sendResponse"));
+const gardeningPosts_model_1 = require("./gardeningPosts.model");
 const gardeningPosts_service_1 = require("./gardeningPosts.service");
 const createGardeningPosts = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield gardeningPosts_service_1.GardeningPostsServices.createGardeningPostsIntoDB(req.body);
@@ -63,10 +64,20 @@ const gardeningPostsDownvoteControllers = (0, catchAsync_1.default)((req, res) =
         data: result,
     });
 }));
+const getTotalPostsCount = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const totalPosts = yield gardeningPosts_model_1.GardeningPosts.countDocuments();
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Total Posts retrieved successfully',
+        data: totalPosts,
+    });
+}));
 exports.GardeningPostsControllers = {
     createGardeningPosts,
     getAllGardeningPosts,
     getGardeningPostsByUserId,
     gardeningPostsUpvoteControllers,
     gardeningPostsDownvoteControllers,
+    getTotalPostsCount
 };

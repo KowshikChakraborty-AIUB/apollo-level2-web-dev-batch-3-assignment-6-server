@@ -20,6 +20,11 @@ const CommentSchema = new Schema<TComment>({
         type: Boolean,
         default: false,
     },
-});
+},
+    {
+        timestamps: true
+    }
+
+);
 
 export const Comments = model<TComment>('Comments', CommentSchema);

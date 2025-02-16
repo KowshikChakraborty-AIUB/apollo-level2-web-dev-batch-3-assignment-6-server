@@ -31,7 +31,7 @@ const getCommentsByPostId = catchAsync(async (req, res) => {
 const getTotalCommentsCount = catchAsync(async (req, res) => {
 
   const totalComments = await Comments.countDocuments();
-  
+
 
   sendResponse(res, {
     statusCode: 200,
@@ -39,12 +39,24 @@ const getTotalCommentsCount = catchAsync(async (req, res) => {
     message: 'Total Comments retrieved successfully',
     data: totalComments,
   });
-}
+})
 
-)
+const getPostsAndCommentsTrend = catchAsync(async (req, res) => {
+
+  const result = await CommentsServices.getPostsAndCommentsTrendFromDB()
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Posts and Comments Trend retrieved successfully',
+    data: result,
+  });
+
+})
 
 export const CommentsControllers = {
   createComments,
   getCommentsByPostId,
-  getTotalCommentsCount
+  getTotalCommentsCount,
+  getPostsAndCommentsTrend
 };
